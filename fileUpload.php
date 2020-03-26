@@ -1,3 +1,7 @@
+<?php 
+    require 'connect.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +10,7 @@
     <title>Photo Upload</title>
 </head>
 <body>
-    <form action="POST" enctype="multipart/form-data">
+    <form action="fileProcessing.php" method="post" enctype="multipart/form-data">
         <label for="name">Photo Name: </label>
         <input type="text" name="name" id="name">
         <label for="description">Description: </label>
