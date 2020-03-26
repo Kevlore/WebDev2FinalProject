@@ -12,13 +12,14 @@
 <body>
     <form action="fileProcessing.php" method="post" enctype="multipart/form-data">
         <label for="name">Photo Name: </label>
-        <input type="text" name="name" id="name">
+        <input type="text" name="name" id="name" />
         <label for="description">Description: </label>
-        <input type="text" name="description" id="description">
+        <input type="text" name="description" id="description" />
         <label for="genre">Select a genre: </label>
         <select id="genre"></select>
         <label for="image">Image: </label>
-        <input type="file" name="image" id="image">
+        <input type="file" name="image" id="image" />
+        <input type="submit" name="command" value="Create" />
     </form>
 </body>
 </html>
