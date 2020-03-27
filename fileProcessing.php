@@ -36,7 +36,8 @@
      }
 
     //Check to make sure the name, description and image fields have been set.
-    if(strlen($_POST['name']) > 0 && strlen($_POST['description']) > 0 && isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
+    if(file_is_an_image($temporary_image_path, $new_image_path) && 
+       strlen($_POST['name']) > 0 && strlen($_POST['description']) > 0 && isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
         //Sanitize the fields.
         $photoName = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $photoName = filter_var($photoName, FILTER_SANITIZE_STRING);
@@ -44,7 +45,7 @@
         $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $description = filter_var($description, FILTER_SANITIZE_STRING);
 
-        $fileLocation = DIRECTORY_SEPARATOR . 'photos' . DIRECTORY_SEPARATOR . $_FILES['image']['name'];
+        $fileLocation = 'photos' . DIRECTORY_SEPARATOR . $_FILES['image']['name'];
 
         //If the create button is clicked insert the photo form data into the database.
         if($_POST['command'] == "Create") {
@@ -55,6 +56,8 @@
             $statement->bindValue(':fileLocation', $fileLocation);
             $statement->execute();
         }
+        header("Location: gallery.php");
+        die();
     }
     else
     {
