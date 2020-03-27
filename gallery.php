@@ -5,10 +5,7 @@
     $selectAll = $db->prepare($query);
     $selectAll->execute();
     $photos = $selectAll->fetchAll();
-
 ?>
-
-    
 
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +18,7 @@
     <?php
         foreach($photos as $photo) :
     ?>
-            <img src="<?=$photo['fileLocation']?>" alt="<?=$photo['name']?>" title="<?=$photo['name']?>"/>
+            <a href="photo.php?photoId=<?=$photo['photoId']?>"><img src="<?=$photo['fileLocation']?>" alt="<?=$photo['name']?>" title="<?=$photo['name']?>"/></a>
     <?php
         endforeach;
     ?>
