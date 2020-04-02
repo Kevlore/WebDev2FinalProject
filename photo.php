@@ -35,5 +35,6 @@
     <img src="<?=$selectedPhoto['fileLocation']?>" alt="<?=$selectedPhoto['name']?>" title="<?=$selectedPhoto['name']?>"/>
     <h5><?=$selectedPhoto['description']?></h5>
     <h6><?=$selectedPhoto['uploadTime']?></h6>
+    <a href="edit.php?id=<?=$selectedPhoto['photoId']?>">edit</a>
 </body>
 </html>
