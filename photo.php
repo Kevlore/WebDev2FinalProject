@@ -1,6 +1,11 @@
 <?php 
     require "connect.php";
 
+    if(!isset($_SESSION['userId'])) { ?>
+        <a href=""></a>
+    <?php
+    }
+
     $query = "SELECT * FROM photos";
     $selectAll = $db->prepare($query);
     $selectAll->execute();

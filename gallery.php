@@ -16,6 +16,11 @@
 </head>
 <body>
     <?php
+        if(!isset($_SESSION['userId'])) { ?>
+            <a href="loginPage.php">Go to login page</a>
+        <?php
+        }
+
         foreach($photos as $photo) :
     ?>
             <a href="photo.php?photoId=<?=$photo['photoId']?>"><img src="<?=$photo['fileLocation']?>" alt="<?=$photo['name']?>" title="<?=$photo['name']?>"/></a>
