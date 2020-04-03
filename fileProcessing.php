@@ -23,7 +23,7 @@
         
         return $file_extension_is_valid && $mime_type_is_valid;
     }
-     
+
     //Detect if an file has been uploaded.
     if ($image_upload_detected) {
         $image_filename       = $_FILES['image']['name'];
@@ -54,6 +54,7 @@
                     $statement->bindValue(':fileLocation', $fileLocation);
                     $statement->execute();
                 }
+
                 //Redirect to the gallery page after uploading image.
                 header("Location: gallery.php");
                 die();

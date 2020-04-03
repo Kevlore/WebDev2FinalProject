@@ -23,12 +23,13 @@
 </head>
 <body>
 <a href="gallery.php"><h1>Back to Gallery</h1></a>
-    <form action="fileProcessing.php">
-        <h2><?=$selectedPhoto['name']?></h2>
+    <form action="updatePhoto.php" method="post">
+        <label for="name">Photo Name: </label>
+        <input type="text" value="<?=$selectedPhoto['name']?>" name="name">
         <img src="<?=$selectedPhoto['fileLocation']?>" alt="<?=$selectedPhoto['name']?>" title="<?=$selectedPhoto['name']?>"/>
-        <h5><?=$selectedPhoto['description']?></h5>
-        <h6><?=$selectedPhoto['uploadTime']?></h6>
-        <input type="hidden" name="id" value="<?=$selectedPhoto['postId']?>" />
+        <label for="description">Description: </label>
+        <textarea name="description" cols="30" rows="10"><?=$selectedPhoto['description']?></textarea>
+        <input type="hidden" name="id" value="<?=$selectedPhoto['photoId']?>" />
         <input type="submit" name="command" value="Update" />
         <input type="submit" name="command" value="Delete" onclick="return confirm('Are you sure you wish to delete this photo?')" />
     </form>
