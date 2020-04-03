@@ -19,9 +19,9 @@
     <a href="gallery.php"><h1>Back to Gallery</h1></a>
     <form action="fileProcessing.php" method="post" enctype="multipart/form-data">
         <label for="name">Photo Name: </label>
-        <input type="text" name="name" id="name" />
+        <input type="text" name="name" id="name" required/>
         <label for="description">Description: </label>
-        <input type="text" name="description" id="description" />
+        <input type="text" name="description" id="description" required/>
         <label for="genre">Select a genre: </label>
         <select id="genre">
             <?php 
@@ -33,7 +33,7 @@
             ?>
         </select>
         <label for="image">Image: </label>
-        <input type="file" name="image" id="image" />
+        <input type="file" name="image" id="image" required/>
         <input type="submit" name="command" value="Create" />
     </form>
 </body>
