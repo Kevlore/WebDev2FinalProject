@@ -1,11 +1,9 @@
 <?php 
     require 'connect.php';
-    ECHO '1';
 
     if(isset($_POST['id'])) {
         $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
-        ECHO '2';
     }
 
     //Check to make sure the name, description and image fields have been provided.
@@ -16,7 +14,6 @@
         
         $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $description = filter_var($description, FILTER_SANITIZE_STRING);
-        ECHO '3';
 
         if($_POST['command'] == "Update")
         {
@@ -26,12 +23,11 @@
             $statement->bindValue(':description', $description);
             $statement->bindValue(':id', $id);
             $statement->execute();
-            ECHO 'HELLO';
         }
         //If the delete button is clicked remove the selected post from the database.
         else if($_POST['command'] == "Delete")
         {
-            $query = "DELETE FROM photos WHERE postId = :id";
+            $query = "DELETE FROM photos WHERE photoId = :id";
             $statement = $db->prepare($query);
             $statement->bindValue(':id', $id, PDO::PARAM_INT);
             $statement->execute();

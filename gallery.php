@@ -22,5 +22,6 @@
     <?php
         endforeach;
     ?>
+    <a href="fileUpload.php">Upload a photo</a>
 </body>
 </html>
