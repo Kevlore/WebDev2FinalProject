@@ -4,6 +4,11 @@
     if(isset($_POST['id'])) {
         $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
+
+        $query = "SELECT * FROM photos WHERE photoId = $id";
+        $statement = $db->prepare($query);
+        $statement->execute();
+        $selectedPhoto = $statement->fetch();
     }
 
     //Check to make sure the name, description and image fields have been provided.
@@ -31,6 +36,14 @@
             $statement = $db->prepare($query);
             $statement->bindValue(':id', $id, PDO::PARAM_INT);
             $statement->execute();
+
+            if(!unlink($selectedPhoto['fileLocation'])) {
+                echo ("This photo could not be deleted due to an error.");
+            }
+            else
+            {
+                echo ("This photo was successfully deleted.");
+            }
         }
     }
     else
