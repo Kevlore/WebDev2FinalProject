@@ -35,5 +35,3 @@
     </form>
 </body>
 </html>
-<!-- unlink to delete file create-->
-<!-- Pasword hash password verify login-->

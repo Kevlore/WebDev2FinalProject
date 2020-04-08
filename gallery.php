@@ -1,5 +1,6 @@
 <?php 
     require "connect.php";
+    require "currentUser.php";
 
     $query = "SELECT * FROM photos";
     $selectAll = $db->prepare($query);
@@ -15,18 +16,18 @@
     <title>Photo Gallery</title>
 </head>
 <body>
-    <?php
-        if(!isset($_SESSION['userId'])) { ?>
+    <div id="loginBar">
+        <?php if(!isset($_SESSION['userId'])) : ?>
             <a href="loginPage.php">Go to login page</a>
-        <?php
-        }
+        <?php else : ?>
+            <p><?=$_SESSION['loginMessage']?></p>
+            <a href="logout.php">Logout</a>
+        <?php endif; ?>
+    </div>
 
-        foreach($photos as $photo) :
-    ?>
-            <a href="photo.php?photoId=<?=$photo['photoId']?>"><img src="<?=$photo['fileLocation']?>" alt="<?=$photo['name']?>" title="<?=$photo['name']?>"/></a>
-    <?php
-        endforeach;
-    ?>
+    <?php foreach($photos as $photo) : ?>
+        <a href="photo.php?photoId=<?=$photo['photoId']?>"><img src="<?=$photo['fileLocation']?>" alt="<?=$photo['name']?>" title="<?=$photo['name']?>"/></a>
+    <?php endforeach; ?>
     <a href="fileUpload.php">Upload a photo</a>
 </body>
 </html>

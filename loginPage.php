@@ -1,3 +1,7 @@
+<?php
+    require "currentUser.php";
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,12 +11,18 @@
 </head>
 <body>
     <a href="gallery.php"><h1>Back to Gallery</h1></a>
-    <form action="" method="post">
+    <form action="processLogin.php" method="post">
         <label for="username">Username: </label>
-        <input type="text" name="username" id="username">
+        <input type="text" name="username" id="username" required />
         <label for="password">Password: </label>
-        <input type="text" name="password" id="password">
-        <input type="submit" name="login" value="Login" />
+        <input type="password" name="password" id="password" required />
+        <input type="submit" name="command" value="Login" />
+            <?php if(!isset($_SESSION['userId']) && isset($_SESSION['loginMessage'])) : ?>
+                <p><?=$_SESSION['loginMessage']?></p>
+            <?php
+                session_unset();
+                endif; 
+            ?>
         <p>
             Or click <a href="registerAccount.php">here</a> to register a new account.
         </p>

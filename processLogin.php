@@ -1,22 +1,26 @@
 <?php
     require 'connect.php';
+    require 'currentUser.php';
 
-    if(strlen($_POST['username']) > 0 && strlen($_POST['password']) > 0 && strlen($_POST['fullName']) > 0 && strlen($_POST['email'])) {
+    if(strlen($_POST['username']) > 0 && strlen($_POST['password']) > 0) {
         
         $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $username = filter_var($username, FILTER_SANITIZE_STRING);
 
         $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $password = filter_var($password, FILTER_SANITIZE_STRING);
-        
-        $fullName = filter_input(INPUT_POST, 'fullName', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $fullName = filter_var($fullName, FILTER_SANITIZE_STRING);
 
-        $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+        if(strlen($_POST['fullName']) > 0 && strlen($_POST['email']) > 0)
+        {
+            $fullName = filter_input(INPUT_POST, 'fullName', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $fullName = filter_var($fullName, FILTER_SANITIZE_STRING);
 
-        $userType = filter_input(INPUT_POST, 'userType', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $userType = filter_var($userType, FILTER_SANITIZE_NUMBER_INT);
+            $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+
+            $userType = filter_input(INPUT_POST, 'userType', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $userType = filter_var($userType, FILTER_SANITIZE_NUMBER_INT);
+        }
         
         //If the create button is clicked insert the photo form data into the database.
         if($_POST['command'] == "Create") {
@@ -28,6 +32,36 @@
             $statement->bindValue(':email', $email);
             $statement->bindValue(':userType', $userType);
             $statement->execute();
+
+            //Redirect to the gallery page after uploading image.
+            header("Location: loginPage.php");
+            die();
+        }
+        else if($_POST['command'] == "Login") {
+            $query = "SELECT * FROM users";
+            $selectAll = $db->prepare($query);
+            $selectAll->execute();
+            $users = $selectAll->fetchAll();
+
+            foreach($users as $user) :
+                if($user['username'] == $username && $user['password'] == $password) {
+                    $_SESSION['userId'] = $user['userId'];
+                    $_SESSION['userType'] = $user['userType'];
+                    $_SESSION['username'] = $user['username'];
+                    $_SESSION['loginMessage'] = "You have successfully logged in.";
+
+                    //If username and password is correct send user back to gallery page.
+                    header("Location: gallery.php");
+                    die();
+                }
+                else
+                {
+                    //If username and password is incorrect send user back to login page.
+                    $_SESSION['loginMessage'] = "Incorrect username or password entered.";
+                    header("Location: loginPage.php");
+                    die();
+                }
+            endforeach;
         }
         else
         {
@@ -42,8 +76,4 @@
         header("Location: registerAccount.php");
         die();
     }
-
-    //Redirect to the gallery page after uploading image.
-    header("Location: loginPage.php");
-    die();
 ?>
