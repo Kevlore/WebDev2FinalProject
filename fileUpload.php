@@ -26,7 +26,7 @@
     <title>Photo Upload</title>
 </head>
 <body>
-    <a href="gallery.php"><h1>Back to Gallery</h1></a>
+    <?php require "navBar.php"; ?>
     <form action="fileProcessing.php" method="post" enctype="multipart/form-data">
         <label for="name">Photo Name: </label>
         <input type="text" name="name" id="name" required/>

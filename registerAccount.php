@@ -7,7 +7,7 @@
     <title>Create Account</title>
 </head>
 <body>
-    <a href="gallery.php"><h1>Back to Gallery</h1></a>
+    <?php require "navBar.php"; ?>
     <form action="processLogin.php" method="post">
         <!-- The possibility for an ajax check to see if the username is already registered -->
         <label for="username">Username: </label>

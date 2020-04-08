@@ -10,7 +10,7 @@
     <title>Login</title>
 </head>
 <body>
-    <a href="gallery.php"><h1>Back to Gallery</h1></a>
+    <?php require "navBar.php"; ?>
     <form action="processLogin.php" method="post">
         <label for="username">Username: </label>
         <input type="text" name="username" id="username" required />
