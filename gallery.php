@@ -20,7 +20,7 @@
         <?php if(!isset($_SESSION['userId'])) : ?>
             <a href="loginPage.php">Go to login page</a>
         <?php else : ?>
-            <p><?=$_SESSION['loginMessage']?></p>
+            <p><?=$_SESSION['loginMessage'] . $_SESSION['username'] . $_SESSION['userType'] . $_SESSION['userId']?></p>
             <a href="logout.php">Logout</a>
         <?php endif; ?>
     </div>

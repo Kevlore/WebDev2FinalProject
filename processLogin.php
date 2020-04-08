@@ -10,6 +10,9 @@
         $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $password = filter_var($password, FILTER_SANITIZE_STRING);
 
+        //Salt and Hash Password
+        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+
         if(strlen($_POST['fullName']) > 0 && strlen($_POST['email']) > 0)
         {
             $fullName = filter_input(INPUT_POST, 'fullName', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -27,7 +30,7 @@
             $query = "INSERT INTO users (username, password, fullName, email, userType) values (:username, :password, :fullName, :email, :userType)";
             $statement = $db->prepare($query);
             $statement->bindValue(':username', $username);
-            $statement->bindValue(':password', $password);
+            $statement->bindValue(':password', $passwordHash);
             $statement->bindValue(':fullName', $fullName);
             $statement->bindValue(':email', $email);
             $statement->bindValue(':userType', $userType);
@@ -43,12 +46,19 @@
             $selectAll->execute();
             $users = $selectAll->fetchAll();
 
+            //Determine the currently targeted user based off of the username.
             foreach($users as $user) :
-                if($user['username'] == $username && $user['password'] == $password) {
-                    $_SESSION['userId'] = $user['userId'];
-                    $_SESSION['userType'] = $user['userType'];
-                    $_SESSION['username'] = $user['username'];
-                    $_SESSION['loginMessage'] = "You have successfully logged in.";
+                if($user['username'] == $username) {
+                    $selectedUser = $user;
+                }
+            endforeach;
+
+            foreach($users as $user) :
+                if($selectedUser['username'] == $username && password_verify($password, $selectedUser['password'])) {
+                    $_SESSION['userId'] = $selectedUser['userId'];
+                    $_SESSION['userType'] = $selectedUser['userType'];
+                    $_SESSION['username'] = $selectedUser['username'];
+                    $_SESSION['loginMessage'] = "You have successfully logged in: ";
 
                     //If username and password is correct send user back to gallery page.
                     header("Location: gallery.php");
@@ -57,7 +67,7 @@
                 else
                 {
                     //If username and password is incorrect send user back to login page.
-                    $_SESSION['loginMessage'] = "Incorrect username or password entered.";
+                    $_SESSION['loginMessage'] = "Incorrect username or password entered." . strlen($selectedUser['password']);
                     header("Location: loginPage.php");
                     die();
                 }
