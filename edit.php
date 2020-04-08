@@ -1,17 +1,28 @@
 <?php
     require "connect.php";
+    require "currentUser.php";
 
-    $query = "SELECT * FROM photos";
-    $selectAll = $db->prepare($query);
-    $selectAll->execute();
-    $photos = $selectAll->fetchAll();
+    //Check to make sure only users with admin privileges can run this code.
+    if(isset($_SESSION['userType']) && $_SESSION['userType'] == 0) {
 
-    foreach($photos as $photo) :
-        $photoId = $_GET['id'];
-        if($photoId == $photo['photoId']) {
-            $selectedPhoto = $photo;
-        }
-    endforeach;
+        $query = "SELECT * FROM photos";
+        $selectAll = $db->prepare($query);
+        $selectAll->execute();
+        $photos = $selectAll->fetchAll();
+
+        foreach($photos as $photo) :
+            $photoId = $_GET['id'];
+            if($photoId == $photo['photoId']) {
+                $selectedPhoto = $photo;
+            }
+        endforeach;
+    }
+    else
+    {
+        //If user is not an admin redirect them to the gallery page.
+        header("Location: gallery.php");
+        die();
+    }
 ?>
 
 <!DOCTYPE html>
@@ -22,7 +33,7 @@
     <title><?=$selectedPhoto['name']?></title>
 </head>
 <body>
-<a href="gallery.php"><h1>Back to Gallery</h1></a>
+    <?php require "navBar.php"; ?>
     <form action="updatePhoto.php" method="post">
         <label for="name">Photo Name: </label>
         <input type="text" value="<?=$selectedPhoto['name']?>" name="name" required />

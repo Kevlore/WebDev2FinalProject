@@ -1,11 +1,21 @@
 <?php 
     require 'connect.php';
+    require 'currentUser.php';
 
-    //Retrieves all columns from the genres table in the database.
-    $query = "SELECT * FROM genres";
-    $selectAll = $db->prepare($query);
-    $selectAll->execute();
-    $genres = $selectAll->fetchAll();
+    //Check to make sure only users with admin privileges can run this code.
+    if(isset($_SESSION['userType']) && $_SESSION['userType'] == 0) {
+        //Retrieves all columns from the genres table in the database.
+        $query = "SELECT * FROM genres";
+        $selectAll = $db->prepare($query);
+        $selectAll->execute();
+        $genres = $selectAll->fetchAll();
+    }
+    else
+    {
+        //If user is not an admin redirect them to the gallery page.
+        header("Location: gallery.php");
+        die();
+    }
 ?>
 
 <!DOCTYPE html>

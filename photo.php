@@ -1,5 +1,6 @@
 <?php 
     require "connect.php";
+    require "currentUser.php";
 
     if(!isset($_SESSION['userId'])) { ?>
         <a href=""></a>
@@ -35,11 +36,13 @@
     <title>Photo</title>
 </head>
 <body>
-    <a href="gallery.php"><h1>Back to Gallery</h1></a>
+    <?php require "navBar.php"; ?>
     <h2><?=$selectedPhoto['name']?></h2>
     <img src="<?=$selectedPhoto['fileLocation']?>" alt="<?=$selectedPhoto['name']?>" title="<?=$selectedPhoto['name']?>"/>
     <h5><?=$selectedPhoto['description']?></h5>
     <h6><?=$selectedPhoto['uploadTime']?></h6>
-    <a href="edit.php?id=<?=$selectedPhoto['photoId']?>">edit</a>
+    <?php if(isset($_SESSION['userType']) && $_SESSION['userType'] == 0) : ?>
+        <a href="edit.php?id=<?=$selectedPhoto['photoId']?>">edit</a>
+    <?php endif; ?>
 </body>
 </html>
