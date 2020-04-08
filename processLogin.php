@@ -36,7 +36,7 @@
             $statement->bindValue(':userType', $userType);
             $statement->execute();
 
-            //Redirect to the gallery page after uploading image.
+            //Redirect to the gallery page after registering.
             header("Location: loginPage.php");
             die();
         }
