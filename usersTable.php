@@ -56,6 +56,11 @@
             <label for="email">Email: </label>
             <input type="email" name="email" id="email" required/>
             <input type="hidden" name='userType' value='1' />
+            <select name="userType" id="selectUserType">
+                    <option value="1">Regular User</option>
+                    <option value="0">Admin User</option>
+            </select>
+            <input type="hidden" name="createType" value="new"/>
             <input type="submit" name="command" value="Create" />
         </form>
         <script src="javascript/confirmPassword.js?1"></script>

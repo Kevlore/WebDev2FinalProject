@@ -36,9 +36,17 @@
             $statement->bindValue(':userType', $userType);
             $statement->execute();
 
-            //Redirect to the gallery page after registering.
-            header("Location: loginPage.php");
-            die();
+            if(isset($_POST['createType']) && $_POST['createType'] == "new")  {
+                //If this create is triggered from the admin users table page then redirect to the user table page.
+                header("Location: usersTable.php");
+                die();
+            }
+            else
+            {
+                //Redirect to the gallery page after registering.
+                header("Location: loginPage.php");
+                die();
+            }
         }
         else if($_POST['command'] == "Login") {
             $query = "SELECT * FROM users";
