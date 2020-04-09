@@ -4,7 +4,6 @@
 
     //Check to make sure only users with admin privileges can run this code.
     if(isset($_SESSION['userType']) && $_SESSION['userType'] == 0) {
-
         $query = "SELECT * FROM photos";
         $selectAll = $db->prepare($query);
         $selectAll->execute();

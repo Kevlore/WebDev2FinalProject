@@ -1,10 +1,20 @@
 <?php
     require 'connect.php';
+    require 'currentUser.php';
 
-    $query = "SELECT * FROM users";
-    $selectAll = $db->prepare($query);
-    $selectAll->execute();
-    $users = $selectAll->fetchAll();
+    //Check to make sure only users with admin privileges can run this code.
+    if(isset($_SESSION['userType']) && $_SESSION['userType'] == 0) {
+        $query = "SELECT * FROM users";
+        $selectAll = $db->prepare($query);
+        $selectAll->execute();
+        $users = $selectAll->fetchAll();
+    }
+    else
+    {
+        //If user is not an admin redirect them to the gallery page.
+        header("Location: gallery.php");
+        die();
+    }
 ?>
 
 <!DOCTYPE html>
@@ -55,7 +65,6 @@
             <!-- The possibility for an ajax check to see if the email is already registered -->
             <label for="email">Email: </label>
             <input type="email" name="email" id="email" required/>
-            <input type="hidden" name='userType' value='1' />
             <select name="userType" id="selectUserType">
                     <option value="1">Regular User</option>
                     <option value="0">Admin User</option>

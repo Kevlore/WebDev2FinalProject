@@ -7,6 +7,9 @@
             <li>
                 <a href="usersTable.php">Users</a>
             </li>
+            <li>
+                <a href="genresTable.php">Genres</a>
+            </li>
         <?php endif; ?>
     </ul>
 </nav>
