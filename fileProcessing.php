@@ -39,22 +39,26 @@
                 move_uploaded_file($temporary_image_path, $new_image_path);
 
                 //Check to make sure the name, description and image fields have been provided.
-                if(strlen($_POST['name']) > 0 && strlen($_POST['description']) > 0 && isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
+                if(strlen($_POST['name']) > 0 && strlen($_POST['description']) > 0 && strlen($_POST['genreId']) > 0 && isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
                     //Sanitize the fields.
                     $photoName = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
                     $photoName = filter_var($photoName, FILTER_SANITIZE_STRING);
                     
                     $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
                     $description = filter_var($description, FILTER_SANITIZE_STRING);
+
+                    $genreId = filter_input(INPUT_POST, 'genreId', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                    $genreId = filter_var($genreId, FILTER_SANITIZE_NUMBER_INT);
             
                     $fileLocation = 'photos' . DIRECTORY_SEPARATOR . $_FILES['image']['name'];
             
                     //If the create button is clicked insert the photo form data into the database.
                     if($_POST['command'] == "Create") {
-                        $query = "INSERT INTO photos (name, description, fileLocation) values (:name, :description, :fileLocation)";
+                        $query = "INSERT INTO photos (name, description, genreId, fileLocation) values (:name, :description, :genreId, :fileLocation)";
                         $statement = $db->prepare($query);
                         $statement->bindValue(':name', $photoName);
                         $statement->bindValue(':description', $description);
+                        $statement->bindValue(':genreId', $genreId);
                         $statement->bindValue(':fileLocation', $fileLocation);
                         $statement->execute();
                     }

@@ -2,11 +2,6 @@
     require "connect.php";
     require "currentUser.php";
 
-    if(!isset($_SESSION['userId'])) { ?>
-        <a href=""></a>
-    <?php
-    }
-
     $query = "SELECT * FROM photos";
     $selectAll = $db->prepare($query);
     $selectAll->execute();
@@ -18,14 +13,20 @@
         }
         else
         {
-            header("Location: /gallery.php");
+            header("Location: gallery.php");
         }
 
         if($photoId == $photo['photoId']) {
             $selectedPhoto = $photo;
-            $uploadTime = $photo['uploadTime'];
         }
     endforeach;
+
+    $genreId = $selectedPhoto['genreId'];
+
+    $query = "SELECT * FROM genres WHERE genreId = $genreId";
+    $statement = $db->prepare($query);
+    $statement->execute();
+    $selectedGenre = $statement->fetch();
 ?>
 
 <!DOCTYPE html>
@@ -40,6 +41,7 @@
     <h2><?=$selectedPhoto['name']?></h2>
     <img src="<?=$selectedPhoto['fileLocation']?>" alt="<?=$selectedPhoto['name']?>" title="<?=$selectedPhoto['name']?>"/>
     <h5><?=$selectedPhoto['description']?></h5>
+    <h5>Genre: <?=$selectedGenre['name']?></h5>
     <h6><?=$selectedPhoto['uploadTime']?></h6>
     <?php if(isset($_SESSION['userType']) && $_SESSION['userType'] == 0) : ?>
         <a href="edit.php?id=<?=$selectedPhoto['photoId']?>">edit</a>

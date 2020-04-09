@@ -32,15 +32,11 @@
         <input type="text" name="name" id="name" required/>
         <label for="description">Description: </label>
         <input type="text" name="description" id="description" required/>
-        <label for="genre">Select a genre: </label>
-        <select id="genre">
-            <?php 
-                foreach($genres as $genre) :
-            ?>
-            <option value="<?=$genre['genreId']?>" title="<?=$genre['description']?>"><?=$genre['name']?></option>
-            <?php 
-                endforeach;
-            ?>
+        <label for="genreId">Select a genre: </label>
+        <select name="genreId" id="genreId">
+            <?php foreach($genres as $genre) : ?>
+                <option value="<?=$genre['genreId']?>" title="<?=$genre['description']?>"><?=$genre['name']?></option>
+            <?php endforeach; ?>
         </select>
         <label for="image">Image: </label>
         <input type="file" name="image" id="image" required/>

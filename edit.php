@@ -22,6 +22,20 @@
         header("Location: gallery.php");
         die();
     }
+
+    //Grab all of the genres for the select options.
+    $query = "SELECT * FROM genres";
+    $selectAll = $db->prepare($query);
+    $selectAll->execute();
+    $genres = $selectAll->fetchAll();
+
+    //Determine the selected genre for this particular photo.
+    $genreId = $selectedPhoto['genreId'];
+
+    $query = "SELECT * FROM genres WHERE genreId = $genreId";
+    $statement = $db->prepare($query);
+    $statement->execute();
+    $selectedGenre = $statement->fetch();
 ?>
 
 <!DOCTYPE html>
@@ -39,6 +53,15 @@
         <img src="<?=$selectedPhoto['fileLocation']?>" alt="<?=$selectedPhoto['name']?>" title="<?=$selectedPhoto['name']?>"/>
         <label for="description">Description: </label>
         <textarea name="description" cols="30" rows="10" required><?=$selectedPhoto['description']?></textarea>
+        <select name="genreId" id="genreId">
+            <?php foreach($genres as $genre) : ?>
+                <option value="<?=$genre['genreId']?>" title="<?=$genre['description']?>" 
+                    <?php if($genre['genreId'] == $selectedGenre['genreId']) : ?>
+                        selected
+                    <?php endif; ?>
+                ><?=$genre['name']?></option>
+            <?php endforeach; ?>
+        </select>
         <input type="hidden" name="id" value="<?=$selectedPhoto['photoId']?>" />
         <input type="submit" name="command" value="Update" />
         <input type="submit" name="command" value="Delete" onclick="return confirm('Are you sure you wish to delete this photo?')" />

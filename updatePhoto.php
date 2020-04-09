@@ -15,21 +15,25 @@
         }
     
         //Check to make sure the name, description and image fields have been provided.
-        if(strlen($_POST['name']) > 0 && strlen($_POST['description']) > 0 ) {
+        if(strlen($_POST['name']) > 0 && strlen($_POST['description']) > 0 && strlen($_POST['genreId']) > 0) {
             //Sanitize the fields.
             $photoName = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $photoName = filter_var($photoName, FILTER_SANITIZE_STRING);
             
             $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $description = filter_var($description, FILTER_SANITIZE_STRING);
+
+            $genreId = filter_input(INPUT_POST, 'genreId', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $genreId = filter_var($genreId, FILTER_SANITIZE_NUMBER_INT);
     
             if($_POST['command'] == "Update")
             {
-                $query = "UPDATE photos SET name = :name, description = :description WHERE photoId = :id";
+                $query = "UPDATE photos SET name = :name, description = :description, genreId = :genreId WHERE photoId = :id";
                 $statement = $db->prepare($query);
                 $statement->bindValue(':name', $photoName);
                 $statement->bindValue(':description', $description);
                 $statement->bindValue(':id', $id);
+                $statement->bindValue(':genreId', $genreId);
                 $statement->execute();
             }
             //If the delete button is clicked remove the selected post from the database.
