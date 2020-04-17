@@ -2,10 +2,39 @@
     require "connect.php";
     require "currentUser.php";
 
-    $query = "SELECT * FROM photos";
+    if(isset($_POST['genreSort'])){
+        $genreSort = filter_input(INPUT_POST, 'genreSort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $genreSort = filter_var($genreSort, FILTER_SANITIZE_NUMBER_INT);
+
+        if($genreSort != -1 && $genreSort != -2)
+        {
+            $query = "SELECT * FROM photos WHERE genreId = :genreSort";
+            $selectAll = $db->prepare($query);
+            $selectAll->bindValue(':genreSort', $genreSort);
+            $selectAll->execute();
+            $photos = $selectAll->fetchAll();
+        }
+        else
+        {
+            $query = "SELECT * FROM photos";
+            $selectAll = $db->prepare($query);
+            $selectAll->execute();
+            $photos = $selectAll->fetchAll();
+        }
+    }
+    else
+    {
+        $query = "SELECT * FROM photos";
+        $selectAll = $db->prepare($query);
+        $selectAll->execute();
+        $photos = $selectAll->fetchAll();
+    }
+
+    $query = "SELECT * FROM genres";
     $selectAll = $db->prepare($query);
     $selectAll->execute();
-    $photos = $selectAll->fetchAll();
+    $genres = $selectAll->fetchAll();
+    
 ?>
 
 <!DOCTYPE html>
@@ -25,12 +54,24 @@
         <?php endif; ?>
     </div>
     <?php require "navBar.php"; ?>
-
-    <?php foreach($photos as $photo) : ?>
-        <a href="photo.php?photoId=<?=$photo['photoId']?>"><img src="<?=$photo['fileLocation']?>" alt="<?=$photo['name']?>" title="<?=$photo['name']?>"/></a>
-    <?php endforeach; ?>
-    <?php if(isset($_SESSION['userType']) && $_SESSION['userType'] == 0) : ?>
-        <a href="fileUpload.php">Upload a photo</a>
-    <?php endif; ?>
+    <form action="gallery.php" method="post">
+        <label for="genreSort">Sort photos by: </label>
+        <select name="genreSort" id="genreSort">
+            <option value="-2">Select a genre</option>
+            <option value="-1">All</option>
+            <?php foreach($genres as $genre) : ?>
+                <option value="<?=$genre['genreId']?>" title="<?=$genre['description']?>"><?=$genre['name']?></option>
+            <?php endforeach; ?>
+        </select>
+        <input type="submit" name="command" value="Sort" />
+    </form>
+    <div id="gallery">
+        <?php foreach($photos as $photo) : ?>
+            <a href="photo.php?photoId=<?=$photo['photoId']?>"><img src="<?=$photo['fileLocation']?>" alt="<?=$photo['name']?>" title="<?=$photo['name']?>"/></a>
+        <?php endforeach; ?>
+        <?php if(isset($_SESSION['userType']) && $_SESSION['userType'] == 0) : ?>
+            <a href="fileUpload.php">Upload a photo</a>
+        <?php endif; ?>
+    </div>
 </body>
 </html>

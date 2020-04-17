@@ -35,6 +35,12 @@
                 $statement->bindValue(':id', $id);
                 $statement->bindValue(':genreId', $genreId);
                 $statement->execute();
+
+                if(isset($_POST['createType']) && $_POST['createType'] == "update") {
+                    //If this update was triggered from the photos table then redirect user back to that page after updating photo.
+                    header("Location: photosTable.php");
+                    die();
+                }
             }
             //If the delete button is clicked remove the selected post from the database.
             else if($_POST['command'] == "Delete")
@@ -50,6 +56,12 @@
                 else
                 {
                     echo ("This photo was successfully deleted.");
+                }
+
+                if(isset($_POST['createType']) && $_POST['createType'] == "update") {
+                    //If this update was triggered from the photos table then redirect user back to that page after deleting photo.
+                    header("Location: photosTable.php");
+                    die();
                 }
             }
         }
