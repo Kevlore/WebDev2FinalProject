@@ -4,10 +4,23 @@
 
     //Check to make sure only users with admin privileges can run this code.
     if(isset($_SESSION['userType']) && $_SESSION['userType'] == 0) {
-        $query = "SELECT * FROM photos";
+
+        if(isset($_POST['photoSort'])) {
+            $photoSort = filter_input(INPUT_POST, 'photoSort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $photoSort = filter_var($photoSort, FILTER_SANITIZE_STRING);
+
+            $query = "SELECT * FROM photos ORDER BY $photoSort ASC";
+            $selectAll = $db->prepare($query);
+            $selectAll->execute();
+            $photos = $selectAll->fetchAll();
+        }
+        else
+        {
+            $query = "SELECT * FROM photos";
         $selectAll = $db->prepare($query);
         $selectAll->execute();
         $photos = $selectAll->fetchAll();
+        }
     }
     else
     {
@@ -27,11 +40,14 @@
 <body>
     <?php require 'navBar.php'; ?>
     <div id="photosTable">
-        <label for="photoSort">Sort the photos by: </label>
-        <select name="photoSort" id="photoSort">
-            <option value="name">Name</option>
-            <option value="uploadTime">Upload Date</option>
-        </select>
+        <form action="photosTable.php" method="post">
+            <label for="photoSort">Sort the photos by: </label>
+            <select name="photoSort" id="photoSort">
+                <option value="name">Name</option>
+                <option value="uploadTime">Upload Date</option>
+            </select>
+            <input type="submit" name="command" value="Sort" />
+        </form>
         <table>
             <tr>
                 <th>Photo ID</th>

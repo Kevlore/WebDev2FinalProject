@@ -44,6 +44,7 @@
 </head>
 <body>
     <?php require "navBar.php"; ?>
+    <?php require "searchBar.php"; ?>
     <div id="photoFrame">
         <h2><?=$selectedPhoto['name']?></h2>
         <img src="<?=$selectedPhoto['fileLocation']?>" alt="<?=$selectedPhoto['name']?>" title="<?=$selectedPhoto['name']?>"/>
